@@ -37,13 +37,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function userType() {
-        return $this->belongsTo('App\UserType');
+    public function userTypes() {
+        return $this->belongsToMany(UserType::class);
     }
 
-    public function audits() {
-        return $this->belongsToMany('App\Audit');
+    public function agencies() {
+        return $this->belongsToMany(Agency::class);
     }
-
 
 }

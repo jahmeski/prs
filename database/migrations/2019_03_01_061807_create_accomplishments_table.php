@@ -15,7 +15,7 @@ class CreateAccomplishmentsTable extends Migration
     {
         Schema::create('accomplishments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('number_of_targets');
+            $table->integer('number_of_accomplishments');
             $table->integer('quarter');
             $table->string('remarks');
             $table->integer('performance_indicator_id')->unsigned();

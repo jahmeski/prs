@@ -12,3 +12,17 @@
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
+
+// SB ADMIN 2
+@import '~startbootstrap-sb-admin-2/scss/sb-admin-2';
+@import '~startbootstrap-sb-admin-2/vendor/datatables/dataTables.bootstrap4.css';
+@import '~startbootstrap-sb-admin-2/vendor/fontawesome-free/scss/fontawesome';
+@import '~startbootstrap-sb-admin-2/vendor/fontawesome-free/css/all.css';
+
+
+// Bootstrap datepicker
+@import '~bootstrap-datepicker/dist/css/bootstrap-datepicker3.css';
+
+
+// Bootstrap daterangepicker
+@import '~bootstrap-daterangepicker/daterangepicker.css';

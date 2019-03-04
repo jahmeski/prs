@@ -14,13 +14,14 @@ class CreatePerformanceIndicatorsTable extends Migration
     public function up()
     {
         Schema::create('performance_indicators', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('name');
             $table->integer('agency_id')->unsigned();
-            $table->foreign('agency_id')->references('id')->on('agencies')->onDelete('SET NULL');
             $table->integer('year_id')->unsigned();
-            $table->foreign('year_id')->references('id')->on('years')->onDelete('SET NULL');
             $table->timestamps();
+
+            $table->foreign('agency_id')->references('id')->on('agencies')->onDelete('cascade');
+            $table->foreign('year_id')->references('id')->on('years')->onDelete('cascade');
         });
     }
 

@@ -16,9 +16,9 @@ class AddAdditionalInfoToUsers extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->integer('agency_id')->unsigned()->nullable();
             $table->string('position')->nullable();
-            $table->integer('user_type_id')->unsigned();
-            $table->foreign('agency_id')->references('id')->on('agencies');
-            $table->foreign('user_type_id')->references('id')->on('user_types');
+            $table->integer('user_type_id')->unsigned()->nullable();
+            $table->foreign('agency_id')->references('id')->on('agencies')->onDelete('cascade');
+            $table->foreign('user_type_id')->references('id')->on('user_types')->onDelete('cascade');
 
         });
     }

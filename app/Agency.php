@@ -13,4 +13,8 @@ class Agency extends Model
     public function users() {
         return $this->hasMany(User::class);
     }
+
+    public function performanceIndicators() {
+        return $this->hasMany(PerformanceIndicator::class);
+    }
 }

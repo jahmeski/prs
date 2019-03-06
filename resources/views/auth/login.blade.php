@@ -8,7 +8,7 @@
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
             </div>
-            <form method="POST" action="{{ route('register') }}" class="user">
+            <form method="POST" action="{{ route('login') }}" class="user">
                     @csrf
               <div class="form-group">
                     <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} form-control-user" name="email" value="{{ old('email') }}" placeholder="Enter Email Address..." required autofocus>

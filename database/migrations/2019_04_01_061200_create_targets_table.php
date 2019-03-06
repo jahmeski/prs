@@ -15,9 +15,11 @@ class CreateTargetsTable extends Migration
     {
         Schema::create('targets', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('number_of_targets');
-            $table->integer('quarter');
-            $table->string('remarks');
+            $table->integer('first_quarter')->nullable();
+            $table->integer('second_quarter')->nullable();
+            $table->integer('third_quarter')->nullable();
+            $table->integer('fourth_quarter')->nullable();
+            $table->integer('total')->nullable();
             $table->integer('performance_indicator_id')->unsigned();
             $table->timestamps();
 

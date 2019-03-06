@@ -7,7 +7,8 @@
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
             </div>
-            <form class="user">
+            <form method="POST" action="{{ route('register') }}" class="user">
+              @csrf
               <div class="form-group">
                   <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }} form-control-user" placeholder="Full Name" name="name" value="{{ old('name') }}" required autofocus>
 

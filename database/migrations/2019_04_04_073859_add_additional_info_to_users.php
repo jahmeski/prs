@@ -31,6 +31,8 @@ class AddAdditionalInfoToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign('users_agency_id_foreign');
+            $table->dropForeign('users_user_type_id_foreign');
             $table->dropColumn('agency_id');
             $table->dropColumn('position');
             $table->dropColumn('user_type_id');

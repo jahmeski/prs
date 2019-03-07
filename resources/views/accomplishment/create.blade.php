@@ -1,3 +1,4 @@
+<div class="alert alert-success" id="add-new-alert" style="display: none"></div>
 {!! Form::open(['route' =>'performance-indicators.store','method' => 'POST']) !!}
     <div class="row">
         <div class="form-group col-lg-12 col-md-12 col-sm-12">

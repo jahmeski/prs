@@ -32,6 +32,11 @@ class CreatePerformanceIndicatorsTable extends Migration
      */
     public function down()
     {
+        Schema::table('performance_indicators', function (Blueprint $table) {
+            $table->dropForeign('performance_indicators_agency_id_foreign');
+            $table->dropForeign('performance_indicators_year_id_foreign');
+        });
+        
         Schema::dropIfExists('performance_indicators');
     }
 }

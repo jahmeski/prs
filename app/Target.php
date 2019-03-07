@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Target extends Model
 {
     protected $fillable = [
-        'number_of_targets', 'quarter', 'remarks', 'performance_indicator_id'
+        'first_quarter', 'second_quarter', 'third_quarter', 'fourth_quarter', 'total', 'performance_indicator_id'
     ];
 
     public function performanceIndicator() {

@@ -17,4 +17,12 @@ class PerformanceIndicator extends Model
     public function year() {
         return $this->belongsTo(Year::class);
     }
+
+    public function target() {
+        return $this->hasOne(Target::class);
+    }
+
+    public function accomplishment() {
+        return $this->hasOne(Accomplishment::class);
+    }
 }

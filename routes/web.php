@@ -16,3 +16,4 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 Route::resource('accomplishments', 'AccomplishmentController');
 Route::resource('performance-indicators', 'PerformanceIndicatorController');
+Route::resource('targets', 'TargetController');

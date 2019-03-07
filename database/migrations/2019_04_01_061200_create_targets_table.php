@@ -34,6 +34,10 @@ class CreateTargetsTable extends Migration
      */
     public function down()
     {
+        Schema::table('targets', function (Blueprint $table) {
+            $table->dropForeign('targets_performance_indicator_id_foreign');
+        });
+
         Schema::dropIfExists('targets');
     }
 }

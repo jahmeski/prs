@@ -35,6 +35,10 @@ class CreateAccomplishmentsTable extends Migration
      */
     public function down()
     {
+        Schema::table('accomplishments', function (Blueprint $table) {
+            $table->dropForeign('accomplishments_performance_indicator_id_foreign');
+        });
+
         Schema::dropIfExists('accomplishments');
     }
 }

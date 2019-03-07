@@ -17,7 +17,6 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-            <div class="alert alert-success" id="add-new-alert" style="display: none"></div>
             <table class="table table-bordered" id="indicator-list">
                 <thead class="thead-dark text-center align-middle">
                     <tr>
@@ -112,8 +111,8 @@ function showMessage(message, element) {
             success: function (response) {
                 if (method == 'POST') {
                     $('#indicator-list').prepend(response);
-                    $('#modal').modal('hide');
                     showMessage("Performance Indicator added.");
+                    setTimeout(location.reload.bind(location), 2000);
                 }
                 else {
                     var id = $('input[name=id]').val();
@@ -142,7 +141,72 @@ function showMessage(message, element) {
         });
     });
 
-    
+
+    $('body').on('click', '.show-target-modal', function (event) {
+        event.preventDefault();
+
+        let me = $(this),
+            url = me.attr('href'),
+            title = me.attr('title');
+
+        $('#modal-title').text(title);
+
+        $.ajax({
+            url: url,
+            dataType: 'html',
+            success: function (response) {
+                $('#modal-body').html(response);
+                $('.modal-footer').find('.btn-primary').remove();
+                $('.modal-footer').find('.btn-secondary').after('<button type="button" class="btn btn-primary" id="save-target">Save Changes</button>');
+
+            }
+        });
+
+        $('#modal').modal('show');
+    });
+
+    $(document).on("click", '#save-target' , function() {
+        event.preventDefault();
+
+        let form = $('#modal-body form'),
+            url = form.attr('action'),
+            method = $('input[name=_method]').val() == undefined ? 'POST' : 'PUT';
+
+        // reset errror messages
+        form.find('.invalid-feedback').remove();
+        form.find('.form-control').removeClass('is-invalid');
+
+        $.ajax({
+            url: url,
+            method: method,
+            data: form.serialize(),
+            success: function (response) {
+                if (method == 'POST') {
+                    showMessage("Targets Added!");
+                    setTimeout(location.reload.bind(location), 2000);
+                }
+                else {
+                    
+                    showMessage("Targets Updated!");
+                    setTimeout(location.reload.bind(location), 1300);
+                  
+
+                }
+
+            },
+            error: function(xhr) {
+                var errors = xhr.responseJSON;
+                    //console.log(errors.errors);
+                if ($.isEmptyObject(errors) == false) {
+                    $.each(errors.errors, function (key, value) {
+                        let err = '<span class="invalid-feedback" style="display:block"><strong>'+ value +'</strong></span>';
+                        form.find('#' + key).addClass('is-invalid').after(err)
+                    });
+                }
+            }
+
+        });
+    });
     
 </script>
     

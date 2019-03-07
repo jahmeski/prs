@@ -20,7 +20,6 @@ class CreateAccomplishmentsTable extends Migration
             $table->integer('third_quarter')->nullable();
             $table->integer('fourth_quarter')->nullable();
             $table->integer('total')->nullable();
-            $table->string('remarks');
             $table->integer('performance_indicator_id')->unsigned();
             $table->timestamps();
 

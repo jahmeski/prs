@@ -1,5 +1,5 @@
 <div class="alert alert-success" id="add-new-alert" style="display: none"></div>
-{!! Form::open(['route' =>'targets.store','method' => 'POST']) !!}
+{!! Form::model($performanceIndicator, ['route' =>'targets.store','method' => 'POST']) !!}
     <div class="row">
         <div class="form-group col-lg-12 col-md-12 col-sm-12">
             <div class="label-group col-md-6">
@@ -7,6 +7,7 @@
             </div>
             <div class="input-group col-md-12">
                 {!! Form::text('first_quarter', null, ['class' => 'form-control', 'id' => 'first_quarter']) !!}
+                {!! Form::hidden('id') !!}
             </div>
         </div>
     </div>
@@ -44,5 +45,5 @@
         </div>
     </div>
 
-    
+
 {!! Form::close() !!}

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Target;
+use Illuminate\Http\Request;
 use App\PerformanceIndicator;
+use Illuminate\Support\Facades\Auth;
 
 class TargetController extends Controller
 {
@@ -23,9 +24,10 @@ class TargetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('targets.create');
+        $performanceIndicator = PerformanceIndicator::findOrFail($request->id);
+        return view('targets.create', compact('performanceIndicator'));
     }
 
     /**
@@ -36,10 +38,11 @@ class TargetController extends Controller
      */
     public function store(Request $request)
     {
-        $target = $request->all();
-        
-        Auth::user()->agency()->create($target);
-        return view('targets.create', compact('target'));
+        $performanceIndicator = PerformanceIndicator::findOrFail($request->id);
+
+        $target = $performanceIndicator->target()->create($request->all());
+        $this->addTotal($target->id);
+        return view('accomplishment.single', compact('performanceIndicator'));
     }
 
     /**
@@ -77,6 +80,7 @@ class TargetController extends Controller
     {
         $target = Target::findOrFail($id);
         $target->update($request->all());
+        $this->addTotal($target->id);
         return view('targets.edit', compact('target'));
     }
 
@@ -89,5 +93,19 @@ class TargetController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function addTotal($id)
+    {
+        $target = Target::findOrFail($id);
+
+        $total = 0;
+        $total += $target->first_quarter;
+        $total += $target->second_quarter;
+        $total += $target->third_quarter;
+        $total += $target->fourth_quarter;
+
+        $target->total = $total;
+        $target->update();
     }
 }

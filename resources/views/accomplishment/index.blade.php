@@ -1,4 +1,4 @@
-@extends('layouts.app') 
+@extends('layouts.app')
 @section('styles')
 <style>
     table>thead>tr>th.accomplishment-head {
@@ -7,7 +7,7 @@
     }
 </style>
 @endsection
- 
+
 @section('content')
 <div class="col-xl-12 col-lg-12">
     <div class="card shadow mb-4">
@@ -46,7 +46,7 @@
                     @else
                     <tr>
                         <td colspan="12" class="text-center">
-                            No records
+                            <H3>No Performance Indicator yet</H3>
                         </td>
                     </tr>
 
@@ -64,150 +64,146 @@
 @section('scripts')
 <script>
 
+// SHOW A MESSAGE AFTER AN EVENT
 function showMessage(message, element) {
-        var alert = element == undefined ? "#add-new-alert" : element;
-        $(alert).text(message).fadeTo(1000, 500).slideUp(500, function () {
-            $(this).slideUp(500);
-        });
-    }
- // EDIT SCHEDULE MODAL
- $('body').on('click', '.show-modal', function (event) {
-        event.preventDefault();
+    var alert = element == undefined ? "#add-new-alert" : element;
+    $(alert).text(message).fadeTo(1000, 500).slideUp(500, function () {
+        $(this).slideUp(500);
+    });
+}
 
-        let me = $(this),
-            url = me.attr('href'),
-            title = me.attr('title');
+// SHOW MODAL FOR CREATION OF PERFORMANCE INDICATOR
+$('body').on('click', '.show-modal', function (event) {
+    event.preventDefault();
 
-        $('#modal-title').text(title);
+    let me = $(this),
+        url = me.attr('href'),
+        title = me.attr('title');
 
-        $.ajax({
-            url: url,
-            dataType: 'html',
-            success: function (response) {
-                $('#modal-body').html(response);
-            }
-        });
+    $('#modal-title').text(title);
 
-        $('#modal').modal('show');
+    $.ajax({
+        url: url,
+        dataType: 'html',
+        success: function (response) {
+            $('#modal-body').html(response);
+        }
     });
 
+    $('#modal').modal('show');
+});
 
-    // SAVING CHANGES TO THE EVENT
-    $('#save-btn').click(function (event) {
-        event.preventDefault();
+// SAVE PERFORMANCE INDICATOR TO DATABASE
+$('#save-btn').click(function (event) {
+    event.preventDefault();
 
-        let form = $('#modal-body form'),
-            url = form.attr('action'),
-            method = 'POST';
+    let form = $('#modal-body form'),
+        url = form.attr('action'),
+        method = 'POST';
 
-        // reset errror messages
-        form.find('.invalid-feedback').remove();
-        form.find('.form-control').removeClass('is-invalid');
+    // reset errror messages
+    form.find('.invalid-feedback').remove();
+    form.find('.form-control').removeClass('is-invalid');
 
-        $.ajax({
-            url: url,
-            method: method,
-            data: form.serialize(),
-            success: function (response) {
-                if (method == 'POST') {
-                    $('#indicator-list').prepend(response);
-                    showMessage("Performance Indicator added.");
-                    setTimeout(location.reload.bind(location), 2000);
-                }
-                else {
-                    var id = $('input[name=id]').val();
-                    if (id) {
-                        $('#leave-list-' + id).replaceWith(response);
-                    }
-
-                    $('#leave-modal').modal('hide');
-
-                    window.location.reload();
-                    showMessage("Leave information updated.", '#update-alert');
+    $.ajax({
+        url: url,
+        method: method,
+        data: form.serialize(),
+        success: function (response) {
+            if (method == 'POST') {
+                $('#indicator-list').prepend(response);
+                showMessage("Performance Indicator added.");
+                setTimeout(location.reload.bind(location), 2000);
+            }
+            else {
+                var id = $('input[name=id]').val();
+                if (id) {
+                    $('#leave-list-' + id).replaceWith(response);
                 }
 
-            },
-            error: function(xhr) {
-                var errors = xhr.responseJSON;
-                    //console.log(errors.errors);
-                if ($.isEmptyObject(errors) == false) {
-                    $.each(errors.errors, function (key, value) {
-                        let err = '<span class="invalid-feedback" style="display:block"><strong>'+ value +'</strong></span>';
-                        form.find('#' + key).addClass('is-invalid').after(err)
-                    });
-                }
+                $('#leave-modal').modal('hide');
+
+                window.location.reload();
+                showMessage("Leave information updated.", '#update-alert');
             }
 
-        });
-    });
-
-
-    $('body').on('click', '.show-target-modal', function (event) {
-        event.preventDefault();
-
-        let me = $(this),
-            url = me.attr('href'),
-            title = me.attr('title');
-
-        $('#modal-title').text(title);
-
-        $.ajax({
-            url: url,
-            dataType: 'html',
-            success: function (response) {
-                $('#modal-body').html(response);
-                $('.modal-footer').find('.btn-primary').remove();
-                $('.modal-footer').find('.btn-secondary').after('<button type="button" class="btn btn-primary" id="save-target">Save Changes</button>');
-
+        },
+        error: function(xhr) {
+            var errors = xhr.responseJSON;
+                //console.log(errors.errors);
+            if ($.isEmptyObject(errors) == false) {
+                $.each(errors.errors, function (key, value) {
+                    let err = '<span class="invalid-feedback" style="display:block"><strong>'+ value +'</strong></span>';
+                    form.find('#' + key).addClass('is-invalid').after(err)
+                });
             }
-        });
+        }
 
-        $('#modal').modal('show');
+    });
+});
+
+// SHOW MODAL FOR TARGET
+$('body').on('click', '.show-target-modal', function (event) {
+    event.preventDefault();
+
+    let me = $(this),
+        url = me.attr('href'),
+        title = me.attr('title');
+        id = me.data('id');
+    $('#modal-title').text(title);
+    $.ajax({
+        url: url,
+        data: {id},
+        dataType: 'html',
+        success: function (response) {
+            $('#modal-body').html(response);
+            $('.modal-footer').find('.btn-primary').remove();
+            $('.modal-footer').find('.btn-secondary').after('<button type="button" class="btn btn-primary" id="save-target">Save Changes</button>');
+        }
     });
 
-    $(document).on("click", '#save-target' , function() {
-        event.preventDefault();
+    $('#modal').modal('show');
+});
 
-        let form = $('#modal-body form'),
-            url = form.attr('action'),
-            method = $('input[name=_method]').val() == undefined ? 'POST' : 'PUT';
+// SAVE CREATION OR CHANGES TO TARGET
+$(document).on("click", '#save-target' , function() {
+    event.preventDefault();
 
-        // reset errror messages
-        form.find('.invalid-feedback').remove();
-        form.find('.form-control').removeClass('is-invalid');
+    let form = $('#modal-body form'),
+        url = form.attr('action'),
+        method = $('input[name=_method]').val() == undefined ? 'POST' : 'PUT';
 
-        $.ajax({
-            url: url,
-            method: method,
-            data: form.serialize(),
-            success: function (response) {
-                if (method == 'POST') {
-                    showMessage("Targets Added!");
-                    setTimeout(location.reload.bind(location), 2000);
-                }
-                else {
-                    
-                    showMessage("Targets Updated!");
-                    setTimeout(location.reload.bind(location), 1300);
-                  
+    // reset errror messages
+    form.find('.invalid-feedback').remove();
+    form.find('.form-control').removeClass('is-invalid');
 
-                }
-
-            },
-            error: function(xhr) {
-                var errors = xhr.responseJSON;
-                    //console.log(errors.errors);
-                if ($.isEmptyObject(errors) == false) {
-                    $.each(errors.errors, function (key, value) {
-                        let err = '<span class="invalid-feedback" style="display:block"><strong>'+ value +'</strong></span>';
-                        form.find('#' + key).addClass('is-invalid').after(err)
-                    });
-                }
+    $.ajax({
+        url: url,
+        method: method,
+        data: form.serialize(),
+        success: function (response) {
+            if (method == 'POST') {
+                showMessage("Targets Added!");
+                setTimeout(location.reload.bind(location), 2000);
             }
+            else {
+                showMessage("Targets Updated!");
+                setTimeout(location.reload.bind(location), 1300);
+            }
+        },
+        error: function(xhr) {
+            var errors = xhr.responseJSON;
+            if ($.isEmptyObject(errors) == false) {
+                $.each(errors.errors, function (key, value) {
+                    let err = '<span class="invalid-feedback" style="display:block"><strong>'+ value +'</strong></span>';
+                    form.find('#' + key).addClass('is-invalid').after(err)
+                });
+            }
+        }
 
-        });
     });
-    
+});
+
 </script>
-    
+
 @endsection

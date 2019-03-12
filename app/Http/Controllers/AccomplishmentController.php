@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\PerformanceIndicator;
 use Illuminate\Support\Facades\Auth;
 
 class AccomplishmentController extends Controller
@@ -14,7 +15,7 @@ class AccomplishmentController extends Controller
      */
     public function index()
     {
-        
+
     }
 
     /**
@@ -22,9 +23,10 @@ class AccomplishmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $performanceIndicator = PerformanceIndicator::findOrFail($request->id);
+        return view('accomplishments.create', compact('performanceIndicator'));
     }
 
     /**

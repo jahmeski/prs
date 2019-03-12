@@ -19,10 +19,10 @@ class PerformanceIndicatorController extends Controller
     {
         $performanceIndicators = PerformanceIndicator::where('agency_id', Auth::user()->agency_id)->orderBy('created_at', 'DESC')->get();
         if ($performanceIndicators) {
-            return view('accomplishment.index', compact('performanceIndicators'));
+            return view('performanceIndicator.index', compact('performanceIndicators'));
         }
         $performanceIndicators = new PerformanceIndicator();
-        return view('accomplishment.index', compact('performanceIndicators'));
+        return view('performanceIndicator.index', compact('performanceIndicators'));
     }
 
     /**
@@ -33,7 +33,7 @@ class PerformanceIndicatorController extends Controller
     public function create()
     {
         $years = Year::pluck('year', 'id')->all();
-        return view('accomplishment.create', compact('years'));
+        return view('performanceIndicator.create', compact('years'));
     }
 
     /**
@@ -51,8 +51,7 @@ class PerformanceIndicatorController extends Controller
         $performanceIndicator->year_id = $request['year_id'];
 
         $performanceIndicator->save();
-   
-        return view('accomplishment.single', compact('performanceIndicator'));
+        return view('performanceIndicator.single', compact('performanceIndicator'));
     }
 
     /**

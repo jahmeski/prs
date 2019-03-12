@@ -41,7 +41,7 @@
                 <tbody>
                     @if ($performanceIndicators->isNotEmpty())
                         @foreach ($performanceIndicators as $performanceIndicator)
-                            @include('accomplishment.single')
+                            @include('performanceIndicator.single')
                         @endforeach
                     @else
                     <tr>
@@ -116,21 +116,18 @@ $('#save-btn').click(function (event) {
                 setTimeout(location.reload.bind(location), 2000);
             }
             else {
-                var id = $('input[name=id]').val();
+               /*  var id = $('input[name=id]').val();
                 if (id) {
                     $('#leave-list-' + id).replaceWith(response);
                 }
-
                 $('#leave-modal').modal('hide');
 
                 window.location.reload();
-                showMessage("Leave information updated.", '#update-alert');
+                showMessage("Leave information updated.", '#update-alert'); */
             }
-
         },
         error: function(xhr) {
             var errors = xhr.responseJSON;
-                //console.log(errors.errors);
             if ($.isEmptyObject(errors) == false) {
                 $.each(errors.errors, function (key, value) {
                     let err = '<span class="invalid-feedback" style="display:block"><strong>'+ value +'</strong></span>';
@@ -150,7 +147,8 @@ $('body').on('click', '.show-target-modal', function (event) {
         url = me.attr('href'),
         title = me.attr('title');
         id = me.data('id');
-    $('#modal-title').text(title);
+        $('#modal-title').text(title);
+
     $.ajax({
         url: url,
         data: {id},
@@ -200,10 +198,33 @@ $(document).on("click", '#save-target' , function() {
                 });
             }
         }
-
     });
 });
 
+
+// SHOW MODAL FOR ACCOMPLISHMENT
+$('body').on('click', '.show-accomplishment-modal', function (event) {
+    event.preventDefault();
+
+    let me = $(this),
+        url = me.attr('href'),
+        title = me.attr('title');
+        id = me.data('id');
+        $('#modal-title').text(title);
+
+    $.ajax({
+        url: url,
+        data: {id},
+        dataType: 'html',
+        success: function (response) {
+            $('#modal-body').html(response);
+            $('.modal-footer').find('.btn-primary').remove();
+            $('.modal-footer').find('.btn-secondary').after('<button type="button" class="btn btn-primary" id="save-accomplishment">Save Changes</button>');
+        }
+    });
+
+    $('#modal').modal('show');
+});
 </script>
 
 @endsection

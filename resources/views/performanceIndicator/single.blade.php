@@ -29,8 +29,8 @@
 
         {{-- ACCOMPLISHMENTS --}}
         <td>
-            <a href="{{ $performanceIndicator->accomplishment ? route('accomplishments.edit', $performanceIndicator->target->id) : route('accomplishments.create') }}"
-                class="h6 show-target-modal" data-id="{{ $performanceIndicator->id }}" title="{{ $performanceIndicator->name }} Accomplishments">
+            <a href="{{ $performanceIndicator->accomplishment ? route('accomplishments.edit', $performanceIndicator->accomplishment->id) : route('accomplishments.create') }}"
+                class="h6 show-accomplishment-modal" data-id="{{ $performanceIndicator->id }}" title="{{ $performanceIndicator->name }} Accomplishments">
             {{ $performanceIndicator->accomplishment ? $performanceIndicator->accomplishment->first_quarter : 0 }}
             </a>
         </td>

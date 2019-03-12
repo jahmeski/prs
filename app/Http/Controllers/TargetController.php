@@ -42,7 +42,7 @@ class TargetController extends Controller
 
         $target = $performanceIndicator->target()->create($request->all());
         $this->addTotal($target->id);
-        return view('accomplishment.single', compact('performanceIndicator'));
+        return view('performanceIndicator.single', compact('performanceIndicator'));
     }
 
     /**

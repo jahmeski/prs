@@ -21,8 +21,8 @@
                 <thead class="thead-dark text-center align-middle">
                     <tr>
                         <th scope="col" rowspan="2" class="accomplishment-head">Performance Indicators</th>
-                        <th scope="col" colspan="5">CY 2019 Quarterly Physical Targets</th>
-                        <th scope="col" colspan="5">Actual Accomplishments</th>
+                        <th scope="col" colspan="6">CY 2019 Quarterly Physical Targets</th>
+                        <th scope="col" colspan="6">Actual Accomplishments</th>
                         <th scope="col" rowspan="2" class="accomplishment-head">Remarks</th>
                     </tr>
                     <tr>
@@ -31,11 +31,13 @@
                         <th scope="col">3rd</th>
                         <th scope="col">4th</th>
                         <th scope="col">Total</th>
+                        <th scope="col">Action</th>
                         <th scope="col">1st</th>
                         <th scope="col">2nd</th>
                         <th scope="col">3rd</th>
                         <th scope="col">4th</th>
                         <th scope="col">Total</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -224,6 +226,44 @@ $('body').on('click', '.show-accomplishment-modal', function (event) {
     });
 
     $('#modal').modal('show');
+});
+
+// SAVE CREATION OR CHANGES TO ACCOMPLISHMENT
+$(document).on("click", '#save-accomplishment' , function() {
+    event.preventDefault();
+
+    let form = $('#modal-body form'),
+        url = form.attr('action'),
+        method = $('input[name=_method]').val() == undefined ? 'POST' : 'PUT';
+
+    // reset errror messages
+    form.find('.invalid-feedback').remove();
+    form.find('.form-control').removeClass('is-invalid');
+
+    $.ajax({
+        url: url,
+        method: method,
+        data: form.serialize(),
+        success: function (response) {
+            if (method == 'POST') {
+                showMessage("Accomplishments Added!");
+                setTimeout(location.reload.bind(location), 2000);
+            }
+            else {
+                showMessage("Accomplishments Updated!");
+                setTimeout(location.reload.bind(location), 1300);
+            }
+        },
+        error: function(xhr) {
+            var errors = xhr.responseJSON;
+            if ($.isEmptyObject(errors) == false) {
+                $.each(errors.errors, function (key, value) {
+                    let err = '<span class="invalid-feedback" style="display:block"><strong>'+ value +'</strong></span>';
+                    form.find('#' + key).addClass('is-invalid').after(err)
+                });
+            }
+        }
+    });
 });
 </script>
 

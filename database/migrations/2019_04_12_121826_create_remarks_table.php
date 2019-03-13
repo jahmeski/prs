@@ -14,10 +14,11 @@ class CreateRemarksTable extends Migration
     public function up()
     {
         Schema::create('remarks', function (Blueprint $table) {
-            $table->Increments('id');
-            $table->String('remarks');
+            $table->increments('id');
+            $table->string('remarks');
             $table->integer('performance_indicator_id')->unsigned();
             $table->timestamps();
+
             $table->foreign('performance_indicator_id')->references('id')->on('performance_indicators')->onDelete('cascade');
         });
     }
@@ -32,6 +33,7 @@ class CreateRemarksTable extends Migration
         Schema::table('remarks', function (Blueprint $table) {
             $table->dropForeign('remarks_performance_indicator_id_foreign');
         });
+        
         Schema::dropIfExists('remarks');
     }
 }

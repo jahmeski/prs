@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\PerformanceIndicator;
 use Illuminate\Support\Facades\Auth;
+use App\Accomplishment;
 
 class AccomplishmentController extends Controller
 {
@@ -37,7 +38,11 @@ class AccomplishmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $performanceIndicator = PerformanceIndicator::findOrFail($request->id);
+
+        $accomplishment = $performanceIndicator->accomplishment()->create($request->all());
+        $this->addTotal($accomplishment->id);
+        return view('performanceIndicator.single', compact('performanceIndicator'));
     }
 
     /**
@@ -83,5 +88,19 @@ class AccomplishmentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function addTotal($id)
+    {
+        $accomplishment = Accomplishment::findOrFail($id);
+
+        $total = 0;
+        $total += $accomplishment->first_quarter;
+        $total += $accomplishment->second_quarter;
+        $total += $accomplishment->third_quarter;
+        $total += $accomplishment->fourth_quarter;
+
+        $accomplishment->total = $total;
+        $accomplishment->update();
     }
 }
